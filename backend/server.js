@@ -50,7 +50,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors({
-   origin: "https://your-vercel-url.vercel.app",
+   origin: "https://future-fs-02-six-blue.vercel.app/",
    credentials: true
 }));
 
