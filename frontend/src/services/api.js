@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // Create a pre-configured axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // Backend port connection
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
+  , // Backend port connection
   withCredentials: true, // MANDATORY: Enables sharing of cookie session tokens across localhost ports
   headers: {
     'Content-Type': 'application/json',
