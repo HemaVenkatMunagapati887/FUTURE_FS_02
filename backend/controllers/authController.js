@@ -1,5 +1,5 @@
 import User from '../models/User.js';
-import generateTokenAndSetCookie from '../utils/generateToken.js';
+import generateTokenAndSetCookie, { getAuthCookieOptions } from '../utils/generateToken.js';
 import { asyncHandler } from '../middlewares/errorMiddleware.js';
 
 // @desc    Register a new user (Employee, Manager, Admin)
@@ -94,8 +94,8 @@ export const login = asyncHandler(async (req, res) => {
 // @access  Private
 export const logout = asyncHandler(async (req, res) => {
   res.cookie('token', '', {
-    httpOnly: true,
-    expires: new Date(0), // Set cookie expiration to instant past
+    ...getAuthCookieOptions(),
+    expires: new Date(0),
   });
 
   res.status(200).json({

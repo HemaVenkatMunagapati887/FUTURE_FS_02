@@ -6,7 +6,15 @@ const connectDB = async () => {
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Database Connection Error: ${error.message}`);
-    process.exit(1); // Exit process with failure
+    if (error.message.includes('querySrv ECONNREFUSED')) {
+      console.error(
+        'Hint: Check internet/DNS, VPN, and that MONGODB_URI in backend/.env is your real Atlas connection string (not the .env.example placeholder).'
+      );
+    }
+    if (!process.env.MONGODB_URI) {
+      console.error('Hint: MONGODB_URI is missing — copy backend/.env.example to backend/.env and set your Atlas URI.');
+    }
+    process.exit(1);
   }
 };
 

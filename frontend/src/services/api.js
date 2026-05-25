@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // Create a pre-configured axios instance
   const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
-    withCredentials: true, // MANDATORY: Enables sharing of cookie session tokens across localhost ports
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+    withCredentials: true, // Required so the httpOnly auth cookie is sent with each request
     headers: {
       'Content-Type': 'application/json',
     },

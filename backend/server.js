@@ -23,9 +23,6 @@ import { errorHandler } from './middlewares/errorMiddleware.js';
 // Initialize environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
-
 const app = express();
 
 // Security HTTP headers via Helmet
@@ -34,23 +31,32 @@ app.use(helmet({
 }));
 
 // CORS configuration - critical for cookie-based JWT auth
+const normalizeOrigin = (url) => (url ? url.replace(/\/$/, '') : url);
+
 const allowedOrigins = [
+  'http://localhost:5173',
   'http://localhost:5174',
-  process.env.CLIENT_URL,
-];
+  'http://localhost:5175',
+  ...(process.env.CLIENT_URL || '').split(',').map((s) => s.trim()).filter(Boolean),
+]
+  .map(normalizeOrigin)
+  .filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin
+    // allow requests with no origin (e.g. Postman, server-to-server)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    const normalized = normalizeOrigin(origin);
+    if (allowedOrigins.includes(normalized)) {
+      return callback(null, true);
     }
+    console.warn(`CORS blocked origin: ${origin} (allowed: ${allowedOrigins.join(', ')})`);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Global API rate limiter (prevent abuse)
@@ -109,6 +115,21 @@ app.use('*', (req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 CRM Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+
+const startServer = async () => {
+  await connectDB();
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 CRM Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  });
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${PORT} is already in use. Stop the other process (or close the other terminal) and run npm run dev again.`);
+      console.error(`Windows: netstat -ano | findstr :${PORT}  then  taskkill /PID <pid> /F`);
+    } else {
+      console.error(err);
+    }
+    process.exit(1);
+  });
+};
+
+startServer();

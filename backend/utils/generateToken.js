@@ -1,19 +1,25 @@
 import jwt from 'jsonwebtoken';
 
+// Production: Vercel (frontend) + Render (API) = cross-site → SameSite=None + Secure
+// Development: use Vite proxy (/api → :5000) so same origin → SameSite=Lax works
+export const getAuthCookieOptions = (maxAge) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    ...(maxAge !== undefined && { maxAge }),
+  };
+};
+
 const generateTokenAndSetCookie = (res, userId) => {
   const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 
-  // Calculate cookie expiration (matching JWT 7d standard)
-  const cookieExpiry = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
+  const cookieExpiry = 7 * 24 * 60 * 60 * 1000;
 
-  res.cookie('token', token, {
-    httpOnly: true, // Shield token from front-end Javascript access (mitigates XSS)
-    secure: process.env.NODE_ENV === 'production', // Enforce SSL in production environment
-    sameSite: 'none', // Required for cross-site cookie sharing with frontend and backend on different hosts
-    maxAge: cookieExpiry,
-  });
+  res.cookie('token', token, getAuthCookieOptions(cookieExpiry));
 
   return token;
 };
