@@ -11,7 +11,7 @@ const generateTokenAndSetCookie = (res, userId) => {
   res.cookie('token', token, {
     httpOnly: true, // Shield token from front-end Javascript access (mitigates XSS)
     secure: process.env.NODE_ENV === 'production', // Enforce SSL in production environment
-    sameSite: 'strict', // Block cookie transfer on cross-site requests (mitigates CSRF)
+    sameSite: 'none', // Required for cross-site cookie sharing with frontend and backend on different hosts
     maxAge: cookieExpiry,
   });
 

@@ -35,23 +35,22 @@ app.use(helmet({
 
 // CORS configuration - critical for cookie-based JWT auth
 const allowedOrigins = [
-  'http://localhost:5173',
   'http://localhost:5174',
-  'http://localhost:5175',
+  process.env.CLIENT_URL,
 ];
-const corsOptions = {
+
+app.use(cors({
   origin: function (origin, callback) {
+    // allow requests with no origin
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error('Blocked by CORS policy'), false);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
-app.use(cors({
-   origin: "https://future-fs-02-six-blue.vercel.app/",
-   credentials: true
 }));
 
 // Global API rate limiter (prevent abuse)
