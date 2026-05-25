@@ -375,9 +375,9 @@ const LeadDetails = () => {
   const leadScore = calculateLeadScore();
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-5 sm:space-y-8 animate-fade-in min-w-0">
       {/* Top Navigation & Action Row */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-crm-border/50 pb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-crm-border/50 pb-4 sm:pb-6">
         <button
           onClick={() => navigate('/leads')}
           className="flex items-center space-x-2 text-xs font-semibold text-crm-textMuted hover:text-white focus:outline-none transition-colors"
@@ -409,46 +409,54 @@ const LeadDetails = () => {
       </div>
 
       {/* Main Grid Details Layout */}
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-5 sm:gap-8 lg:grid-cols-3 min-w-0">
         {/* Left Card Panel: Profile Details & Engagement Score */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="lg:col-span-1 space-y-5 sm:space-y-6 min-w-0">
           {/* Card profile */}
-          <div className="glass-panel rounded-3xl p-6 border border-crm-border/60 relative overflow-hidden">
+          <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-crm-border/60 relative sm:overflow-hidden">
             {lead.status === 'Converted' && (
-              <div className="absolute -right-16 -top-16 flex h-32 w-32 items-center justify-center bg-crm-success/15 rotate-45 border border-crm-success/20">
-                <CheckCircle className="h-10 w-10 text-crm-success -rotate-45 mt-10 animate-bounce" />
-              </div>
+              <>
+                <div className="mb-4 flex justify-center sm:hidden">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-crm-success/30 bg-crm-success/15 px-3 py-1.5 text-xs font-bold text-crm-success">
+                    <CheckCircle className="h-4 w-4 shrink-0" />
+                    Converted Client
+                  </span>
+                </div>
+                <div className="pointer-events-none absolute -right-16 -top-16 hidden sm:flex h-32 w-32 items-center justify-center bg-crm-success/15 rotate-45 border border-crm-success/20">
+                  <CheckCircle className="h-10 w-10 text-crm-success -rotate-45 mt-10" />
+                </div>
+              </>
             )}
 
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-crm-primary/15 border border-crm-primary/30 text-crm-primary font-extrabold text-2xl shadow-glow">
+            <div className="relative z-10 flex flex-col items-center text-center space-y-3 sm:space-y-4">
+              <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-crm-primary/15 border border-crm-primary/30 text-crm-primary font-extrabold text-xl sm:text-2xl shadow-glow shrink-0">
                 {lead.name.charAt(0).toUpperCase()}
               </div>
 
-              <div>
-                <h3 className="text-lg font-bold text-white tracking-wide">{lead.name}</h3>
-                <p className="text-xs text-crm-textMuted mt-0.5">{lead.company || 'Private Buyer'}</p>
+              <div className="w-full min-w-0 px-1">
+                <h3 className="text-xl sm:text-lg font-bold text-white tracking-wide break-words">{lead.name}</h3>
+                <p className="text-sm text-crm-textMuted mt-1 break-words">{lead.company || 'Private Buyer'}</p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-2">
-                <span className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getStatusBadgeStyle(lead.status)}`}>
+                <span className={`rounded px-2.5 py-1 text-xs font-bold uppercase tracking-wider ${getStatusBadgeStyle(lead.status)}`}>
                   {lead.status}
                 </span>
-                <span className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getPriorityBadgeStyle(lead.priority)}`}>
+                <span className={`rounded px-2.5 py-1 text-xs font-bold uppercase tracking-wider ${getPriorityBadgeStyle(lead.priority)}`}>
                   {lead.priority || 'Medium'}
                 </span>
               </div>
             </div>
 
             {/* Heat Score */}
-            <div className="mt-6 border-t border-crm-border/40 pt-5 space-y-2">
-              <div className="flex items-center justify-between text-xxs font-bold text-crm-textMuted uppercase tracking-wider">
+            <div className="relative z-10 mt-5 sm:mt-6 border-t border-crm-border/40 pt-4 sm:pt-5 space-y-2.5">
+              <div className="flex items-center justify-between gap-2 text-xs sm:text-xxs font-bold text-crm-textMuted uppercase tracking-wider">
                 <span>Engagement Rating</span>
-                <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${getScoreColor(leadScore)}`}>
-                  {leadScore} / 100 Score
+                <span className={`shrink-0 rounded px-2 py-0.5 text-xs font-bold ${getScoreColor(leadScore)}`}>
+                  {leadScore} / 100
                 </span>
               </div>
-              <div className="w-full bg-crm-border/40 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-crm-border/40 h-2.5 sm:h-2 rounded-full overflow-hidden">
                 <div
                   className="bg-crm-primary h-full rounded-full transition-all duration-500 shadow-glow"
                   style={{ width: `${leadScore}%` }}
@@ -457,34 +465,45 @@ const LeadDetails = () => {
             </div>
 
             {/* Core Specs */}
-            <div className="mt-6 border-t border-crm-border/40 pt-5 space-y-3.5 text-xs">
-              <div className="flex items-center space-x-3 text-crm-textMuted">
-                <Phone className="h-4.5 w-4.5 text-crm-primary shrink-0" />
-                <span className="text-white font-medium">{lead.phone}</span>
+            <div className="relative z-10 mt-5 sm:mt-6 border-t border-crm-border/40 pt-4 sm:pt-5 space-y-4 text-sm sm:text-xs">
+              <div className="flex items-start gap-3 text-crm-textMuted">
+                <Phone className="h-5 w-5 sm:h-4.5 sm:w-4.5 text-crm-primary shrink-0 mt-0.5" />
+                <a href={`tel:${lead.phone}`} className="min-w-0 flex-1 break-all text-white font-medium hover:text-crm-primary">
+                  {lead.phone}
+                </a>
               </div>
-              <div className="flex items-center space-x-3 text-crm-textMuted">
-                <Mail className="h-4.5 w-4.5 text-crm-primary shrink-0" />
-                <span className="text-white truncate font-medium">{lead.email || 'No email registered'}</span>
+              <div className="flex items-start gap-3 text-crm-textMuted">
+                <Mail className="h-5 w-5 sm:h-4.5 sm:w-4.5 text-crm-primary shrink-0 mt-0.5" />
+                {lead.email ? (
+                  <a href={`mailto:${lead.email}`} className="min-w-0 flex-1 break-all text-white font-medium hover:text-crm-primary">
+                    {lead.email}
+                  </a>
+                ) : (
+                  <span className="min-w-0 flex-1 text-white font-medium">No email registered</span>
+                )}
               </div>
-              <div className="flex items-center space-x-3 text-crm-textMuted">
-                <Briefcase className="h-4.5 w-4.5 text-crm-primary shrink-0" />
-                <span>Service:{' '}
+              <div className="flex items-start gap-3 text-crm-textMuted">
+                <Briefcase className="h-5 w-5 sm:h-4.5 sm:w-4.5 text-crm-primary shrink-0 mt-0.5" />
+                <span className="min-w-0 flex-1 break-words leading-snug">
+                  <span className="text-crm-textMuted">Service: </span>
                   <strong className="text-white font-semibold">
                     {lead.interestedService || 'Generic Sales Inquiry'}
                   </strong>
                 </span>
               </div>
-              <div className="flex items-center space-x-3 text-crm-textMuted">
-                <DollarSign className="h-4.5 w-4.5 text-crm-primary shrink-0" />
-                <span>Est. Value:{' '}
+              <div className="flex items-start gap-3 text-crm-textMuted">
+                <DollarSign className="h-5 w-5 sm:h-4.5 sm:w-4.5 text-crm-primary shrink-0 mt-0.5" />
+                <span className="min-w-0 flex-1 break-words leading-snug">
+                  <span className="text-crm-textMuted">Est. Value: </span>
                   <strong className="text-crm-success font-bold font-mono">
                     ${lead.estimatedValue.toLocaleString()}
                   </strong>
                 </span>
               </div>
-              <div className="flex items-center space-x-3 text-crm-textMuted">
-                <User className="h-4.5 w-4.5 text-crm-primary shrink-0" />
-                <span>Assignee:{' '}
+              <div className="flex items-start gap-3 text-crm-textMuted">
+                <User className="h-5 w-5 sm:h-4.5 sm:w-4.5 text-crm-primary shrink-0 mt-0.5" />
+                <span className="min-w-0 flex-1 break-words leading-snug">
+                  <span className="text-crm-textMuted">Assignee: </span>
                   <strong className="text-white font-medium">
                     {lead.assignedTo?.name || 'Unassigned'}
                   </strong>
@@ -495,9 +514,9 @@ const LeadDetails = () => {
         </div>
 
         {/* Right Side: Tab Selection Panels */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-5 sm:space-y-6 min-w-0">
           {user.role === 'Employee' && (
-            <div className="rounded-3xl border border-crm-border/60 bg-crm-dark/80 p-4 text-sm text-crm-textMuted">
+            <div className="rounded-2xl sm:rounded-3xl border border-crm-border/60 bg-crm-dark/80 p-4 text-sm text-crm-textMuted">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-2">Next Steps for Employee</h4>
               <ul className="list-disc space-y-2 pl-4 text-xs leading-5">
                 <li>Review the lead contact and company details.</li>
@@ -510,7 +529,7 @@ const LeadDetails = () => {
           )}
 
           {/* Tab buttons */}
-          <div className="flex gap-1.5 flex-nowrap overflow-x-auto border-b border-crm-border/60 pb-2">
+          <div className="flex gap-2 flex-nowrap overflow-x-auto border-b border-crm-border/60 pb-2 -mx-1 px-1 snap-x snap-mandatory [scrollbar-width:thin]">
             {[
               { id: 'summary', name: 'General Details', icon: Info },
               { id: 'reminders', name: 'Follow-Ups', icon: Calendar },
@@ -522,34 +541,34 @@ const LeadDetails = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 rounded-t-xl px-4 py-2.5 text-xs font-semibold border-b-2 transition-all focus:outline-none ${
+                  className={`flex shrink-0 snap-start items-center gap-2 rounded-t-xl px-3 sm:px-4 py-3 sm:py-2.5 text-xs sm:text-xs font-semibold border-b-2 transition-all focus:outline-none min-h-[44px] ${
                     activeTab === tab.id
                       ? 'border-crm-primary text-crm-primary bg-crm-primary/5 font-bold'
                       : 'border-transparent text-crm-textMuted hover:text-white'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span>{tab.name}</span>
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="whitespace-nowrap">{tab.name}</span>
                 </button>
               );
             })}
           </div>
 
           {/* TAB Content Render */}
-          <div className="glass-panel rounded-3xl p-6 border border-crm-border/60 min-h-[440px] shadow-lg">
+          <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-crm-border/60 min-h-0 sm:min-h-[440px] shadow-lg min-w-0">
             {/* 1. GENERAL DETAILS */}
             {activeTab === 'summary' && (
               <div className="space-y-6 animate-fade-in">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-crm-textMuted">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <h3 className="text-sm sm:text-xs font-bold uppercase tracking-wider text-crm-textMuted">
                     Lead Records Profile
                   </h3>
                   {!isEditing && (
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="flex items-center space-x-1.5 rounded-lg border border-crm-border bg-crm-dark px-3 py-1.5 text-xxs font-semibold text-crm-text hover:bg-crm-border/60 transition-colors focus:outline-none"
+                      className="flex w-full sm:w-auto items-center justify-center gap-1.5 rounded-lg border border-crm-border bg-crm-dark px-4 py-2.5 sm:py-1.5 text-xs sm:text-xxs font-semibold text-crm-text hover:bg-crm-border/60 transition-colors focus:outline-none min-h-[44px] sm:min-h-0"
                     >
-                      <Edit2 className="h-3.5 w-3.5" />
+                      <Edit2 className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                       <span>Edit Info</span>
                     </button>
                   )}
@@ -722,44 +741,44 @@ const LeadDetails = () => {
                     </div>
                   </form>
                 ) : (
-                  <div className="grid gap-6 sm:grid-cols-2 text-xs">
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Contact Name</p>
-                      <p className="font-semibold text-white text-sm">{lead.name}</p>
+                  <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 text-sm sm:text-xs">
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Contact Name</p>
+                      <p className="font-semibold text-white text-base sm:text-sm break-words">{lead.name}</p>
                     </div>
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Company / Organization</p>
-                      <p className="text-white text-sm font-semibold">{lead.company || 'Private Buyer'}</p>
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Company / Organization</p>
+                      <p className="text-white text-base sm:text-sm font-semibold break-words">{lead.company || 'Private Buyer'}</p>
                     </div>
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Primary Phone</p>
-                      <p className="text-white">{lead.phone}</p>
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Primary Phone</p>
+                      <p className="text-white text-base sm:text-sm break-all">{lead.phone}</p>
                     </div>
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Email Address</p>
-                      <p className="text-white">{lead.email || 'No email registered'}</p>
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Email Address</p>
+                      <p className="text-white text-base sm:text-sm break-all">{lead.email || 'No email registered'}</p>
                     </div>
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Service Required</p>
-                      <p className="text-white font-medium">{lead.interestedService || 'Generic Sales Inquiry'}</p>
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Service Required</p>
+                      <p className="text-white text-base sm:text-sm font-medium break-words">{lead.interestedService || 'Generic Sales Inquiry'}</p>
                     </div>
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Client Budget</p>
-                      <p className="text-white font-bold font-mono">${(lead.budget || 0).toLocaleString()}</p>
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Client Budget</p>
+                      <p className="text-white text-base sm:text-sm font-bold font-mono break-words">${(lead.budget || 0).toLocaleString()}</p>
                     </div>
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Lead Priority</p>
-                      <span className={`inline-block rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider mt-1.5 ${getPriorityBadgeStyle(lead.priority)}`}>
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Lead Priority</p>
+                      <span className={`inline-block rounded px-2 py-1 text-xs font-bold uppercase tracking-wider mt-1 ${getPriorityBadgeStyle(lead.priority)}`}>
                         {lead.priority || 'Medium'}
                       </span>
                     </div>
-                    <div>
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1">Estimated Value</p>
-                      <p className="text-crm-success font-bold text-sm font-mono">${lead.estimatedValue.toLocaleString()}</p>
+                    <div className="min-w-0 rounded-xl border border-crm-border/30 bg-crm-dark/20 p-3 sm:border-0 sm:bg-transparent sm:p-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Estimated Value</p>
+                      <p className="text-crm-success font-bold text-base sm:text-sm font-mono break-words">${lead.estimatedValue.toLocaleString()}</p>
                     </div>
-                    <div className="sm:col-span-2 bg-crm-dark/30 border border-crm-border/40 rounded-xl p-4">
-                      <p className="text-xxs font-semibold uppercase tracking-wider text-crm-textMuted mb-1.5">Freeform Background Notes</p>
-                      <p className="text-crm-text whitespace-pre-wrap leading-relaxed text-xs">
+                    <div className="sm:col-span-2 bg-crm-dark/30 border border-crm-border/40 rounded-xl p-4 min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-crm-textMuted mb-2">Freeform Background Notes</p>
+                      <p className="text-crm-text whitespace-pre-wrap break-words leading-relaxed text-sm sm:text-xs">
                         {lead.notes || 'No general notes logged for this prospect.'}
                       </p>
                     </div>
