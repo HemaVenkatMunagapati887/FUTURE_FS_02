@@ -1,0 +1,101 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    @apply bg-crm-dark text-crm-text font-sans antialiased;
+    margin: 0;
+  }
+}
+
+/* Custom premium scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #242f44;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5f5af6;
+}
+
+/* Custom CSS classes for glassmorphic elements */
+.glass-panel {
+  background: rgba(21, 28, 44, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(36, 47, 68, 0.6);
+}
+
+.glass-card {
+  background: rgba(21, 28, 44, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(36, 47, 68, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(95, 90, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Background mesh gradient for premium SaaS look */
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(95, 90, 246, 0.12) 0px, transparent 40%),
+    radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.08) 0px, transparent 45%),
+    radial-gradient(at 80% 20%, rgba(16, 185, 129, 0.03) 0px, transparent 35%);
+}
+
+/* Keyframes & micro-animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes progressShrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* Tailwind 4 utilities */
+@utility text-xxs {
+  font-size: 0.65rem;
+  line-height: 0.85rem;
+}
+
+@utility scale-98 {
+  transform: scale(0.98);
+}
+
+@utility animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@utility animate-scale-up {
+  animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@utility animate-slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
