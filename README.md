@@ -54,7 +54,16 @@ cd backend
 npm install
 ```
 
-Create a `.env` file if required by your backend config, then start the server:
+Copy `backend/.env.example` to `backend/.env` and update the MongoDB URI with your Atlas connection string:
+
+```env
+MONGODB_URI=mongodb+srv://<db_username>:<db_password>@cluster0.klpmixl.mongodb.net/<dbname>?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key_here
+JWT_EXPIRES_IN=7d
+NODE_ENV=development
+```
+
+Then start the backend server:
 
 ```bash
 npm run dev
