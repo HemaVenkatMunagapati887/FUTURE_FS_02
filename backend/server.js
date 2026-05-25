@@ -49,7 +49,10 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
-app.use(cors(corsOptions));
+app.use(cors({
+   origin: "https://your-vercel-url.vercel.app",
+   credentials: true
+}));
 
 // Global API rate limiter (prevent abuse)
 const globalLimiter = rateLimit({
